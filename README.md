@@ -1,6 +1,4 @@
 ## Mercenary Tango
-A small addon ment to be used with Accensus's Mercenary Merchant addon (https://gitlab.com/accensi/hd-addons/merchant/-/tree/mercenary)
+A small addon that randomly spawns a Tango in a map as long as it has deathmatch starts, who when killed, will drop extra goodies.
 
-It will randomly spawn a Tango on any map that has a deathmatch start in it, notifying the player, and if the Tango is killed, they'll drop their weaponry, extra goodies, and money to use with the merchant.
-
-Use branch "merchantless" for a version that doesn't need the merchant to work and with slightly altered drop chances.
+Has compatibility with Accsensus's Mercenary Merchant addon (A small addon ment to be used with Accensus's Mercenary Merchant addon (https://gitlab.com/accensi/hd-addons/merchant/-/tree/mercenary), where the Tango will drop less goodies but extra money instead.
