@@ -1,7 +1,7 @@
 version "4.4"
 
 //taken form juvenile power fantasy
-Class HDTangoSpawner : StaticEventHandler
+Class HDTangoSpawner : EventHandler
 {
 	Array<Actor> Things;
 	override void WorldLoaded(WorldEvent e)
@@ -89,6 +89,9 @@ Class TangoSpawner : Actor
 				else
 				{
 					//A_Log("tango died", 0);
+					string moneys = "MercenaryBucks";
+					class<Actor> cls = moneys;
+					
 					tracer.A_DropItem("PortableLiteAmp", 1, 48);
 					tracer.A_DropItem("PortableLadder", 1, 56);
 					tracer.A_DropItem("PortableStimpack", random(2,4), 128);
@@ -96,7 +99,10 @@ Class TangoSpawner : Actor
 					tracer.A_DropItem("DoorBuster", random(1,2), 72);
 					tracer.A_DropItem("BluePotion", 1, 8);
 					tracer.A_DropItem("HDMap", 1, 128);
-					tracer.A_DropItem("MercenaryBucks", random(90,120), 256);
+					if(moneys)
+					{
+						tracer.A_DropItem(moneys, random(90,120), 256);
+					}
 					SetStateLabel("Perish");
 				}
 			}
