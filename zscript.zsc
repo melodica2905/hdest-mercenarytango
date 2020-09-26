@@ -96,7 +96,7 @@ Class TangoSpawner : Actor
 					tracer.A_DropItem("DoorBuster", random(1,2), 72);
 					tracer.A_DropItem("BluePotion", 1, 8);
 					tracer.A_DropItem("HDMap", 1, 128);
-					tracer.A_DropItem("MercenaryBucks", random(250,350), 256);
+					tracer.A_DropItem("MercenaryBucks", random(90,120), 256);
 					SetStateLabel("Perish");
 				}
 			}
