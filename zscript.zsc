@@ -1,0 +1,116 @@
+version "4.4"
+
+//taken form juvenile power fantasy
+Class HDTangoSpawner : StaticEventHandler
+{
+	Array<Actor> Things;
+	override void WorldLoaded(WorldEvent e)
+	{
+		Things.Clear();
+		if (!deathmatch && e.IsReopen == false)
+		{
+			for (int i = 0; i < 100; i++)
+			{
+				Vector3 checkpos = Level.PickDeathMatchStart();
+				if (checkpos ~== (0,0,0))
+					return;
+				if (Things.Size() > 0)
+				{
+					bool cont = false;
+					for (int i = 0; i < Things.Size(); i++)
+					{
+						if (Things[i].pos == checkpos)
+						{
+							cont = true;
+							break;
+						}
+					}
+					if (cont) continue;
+				}
+				Actor n = Actor.Spawn("TangoSpawner", checkpos);
+				if (n) Things.Push(n);
+			}
+		}
+	}
+}
+
+Class TangoSpawner : Actor
+{
+	Default
+	{
+		+AMBUSH
+	}
+	States
+	{
+		Spawn:
+			TNT1 A 1;
+			//TNT1 A 0 A_Log("spawned", 0);
+			TNT1 A 0 A_CheckSightOrRange(256, "SpawnTango");
+			Stop;
+		Perish:
+			//TNT1 A 0 A_Log("perished", 0);
+			TNT1 A 1;
+			Stop;
+		SpawnTango:
+			TNT1 A 0 A_Jump(224, "Perish");
+			//TNT1 A 0 A_Log("tango", 0);
+			TNT1 A 1 
+			{
+				A_SpawnItemEx("Tango", angle: random(0,356), flags: SXF_TRANSFERAMBUSHFLAG|SXF_ISTRACER);
+				if(tracer)
+				{
+					tracer.bMISSILEMORE = TRUE;
+					tracer.bMISSILEEVENMORE = TRUE;
+					tracer.MinMissileChance = 4;
+					switch(random(0,6))
+					{
+						case 0: A_Log("\ccYour radio is picking up a garbled, seemingly treatening transmission.", 0); return;
+						case 1: A_Log("\ccSomeone has been promised pay for eliminating you.", 0); return;
+						case 2: A_Log("\ccYou get the feeling someone is trying to hunt you down.", 0); return;
+						case 3: A_Log("\ccSomeone seems to be working with the enemy.", 0); return;
+						case 4: A_Log("\ccSomeone has paid top dollar to see your head on a plate.", 0); return;
+						case 5: A_Log("\ccYou get the eerie feeling that The Tyrant is using paper money for something.", 0); return;
+						case 6: A_Log("\ccYour radio is picking up vaguely treatening messages from someone.", 0); return;
+					}
+				}
+			}
+		TangoCheck:
+			TNT1 A 1
+			{
+				if(!tracer)
+				{
+					SetStateLabel("Perish");
+					return;
+				}
+				else if(tracer.health > 0 && !tracer.bCORPSE)
+				{
+					return;
+				}
+				else
+				{
+					//A_Log("tango died", 0);
+					tracer.A_DropItem("PortableLiteAmp", 1, 48);
+					tracer.A_DropItem("PortableLadder", 1, 56);
+					tracer.A_DropItem("PortableStimpack", random(2,4), 128);
+					tracer.A_DropItem("PortableBerserkPack", random(1,2), 18);
+					tracer.A_DropItem("DoorBuster", random(1,2), 72);
+					tracer.A_DropItem("BluePotion", 1, 8);
+					tracer.A_DropItem("HDMap", 1, 128);
+					tracer.A_DropItem("MercenaryBucks", random(250,350), 256);
+					SetStateLabel("Perish");
+				}
+			}
+			Loop;
+	}
+}
+
+/*Class Tango2 : Tango
+{
+	Default
+	{
+		MinMissileChance 4; 
+		MeleeThreshold 144; //does this even work with hd enemies?
+		Obituary "%o was hunted down by a Tango";
+		HitObituary "%o violated a Tango's personal space.";
+	}
+}*/
