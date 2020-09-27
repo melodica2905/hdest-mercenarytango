@@ -40,6 +40,7 @@ Class TangoSpawner : Actor
 	{
 		+AMBUSH
 	}
+	double randtickerfloat;
 	States
 	{
 		Spawn:
@@ -62,16 +63,12 @@ Class TangoSpawner : Actor
 					tracer.bMISSILEMORE = TRUE;
 					tracer.bMISSILEEVENMORE = TRUE;
 					tracer.MinMissileChance = 4;
-					switch(random(0,6))
-					{
-						case 0: A_Log("\ccYour radio is picking up a garbled, seemingly treatening transmission.", 0); return;
-						case 1: A_Log("\ccSomeone has been promised pay for eliminating you.", 0); return;
-						case 2: A_Log("\ccYou get the feeling someone is trying to hunt you down.", 0); return;
-						case 3: A_Log("\ccSomeone seems to be working with the enemy.", 0); return;
-						case 4: A_Log("\ccSomeone has paid top dollar to see your head on a plate.", 0); return;
-						case 5: A_Log("\ccYou get the eerie feeling that The Tyrant is using paper money for something.", 0); return;
-						case 6: A_Log("\ccYour radio is picking up vaguely treatening messages from someone.", 0); return;
-					}
+					randtickerfloat=frandom(0.0,1.0);
+					array<string>msgs;msgs.clear();
+					string msg=Wads.ReadLump(Wads.CheckNumForName("tangotexts",0));
+					msg.split(msgs,"\n");
+					msg=msgs[int(clamp(randtickerfloat*msgs.size(), 0, msgs.size()-1))];
+					A_Log(msg,false); return;
 				}
 			}
 		TangoCheck:
