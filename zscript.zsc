@@ -57,7 +57,7 @@ Class TangoSpawner : Actor
 			//TNT1 A 0 A_Log("tango", 0);
 			TNT1 A 1 
 			{
-				A_SpawnItemEx("Tango", angle: random(0,356), flags: SXF_TRANSFERAMBUSHFLAG|SXF_ISTRACER);
+				A_SpawnItemEx("HDGoon", angle: random(0,356), flags: SXF_TRANSFERAMBUSHFLAG|SXF_ISTRACER);
 				if(tracer)
 				{
 					tracer.bMISSILEMORE = TRUE;
